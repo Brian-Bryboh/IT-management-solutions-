@@ -1,0 +1,77 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Ticket {
+    String title;
+    String status;
+
+    Ticket(String title) {
+        this.title = title;
+        this.status = "Open";
+    }
+
+    void resolve() {
+        this.status = "Resolved";
+    }
+
+    @Override
+    public String toString() {
+        return title + " - " + status;
+    }
+}
+
+public class ITSolutionOperations {
+    static ArrayList<Ticket> tickets = new ArrayList<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n--- IT Solution Operations ---");
+            System.out.println("1. Create Ticket");
+            System.out.println("2. View Tickets");
+            System.out.println("3. Resolve Ticket");
+            System.out.println("4. Exit");
+            System.out.print("Choose an option: ");
+            choice = scanner.nextInt();
+            scanner.nextLine();  // consume newline
+
+            switch (choice) {
+                case 1 -> createTicket();
+                case 2 -> viewTickets();
+                case 3 -> resolveTicket();
+                case 4 -> System.out.println("Exiting...");
+                default -> System.out.println("Invalid choice.");
+            }
+        } while (choice != 4);
+    }
+
+    static void createTicket() {
+        System.out.print("Enter ticket title: ");
+        String title = scanner.nextLine();
+        tickets.add(new Ticket(title));
+        System.out.println("Ticket created successfully.");
+    }
+
+    static void viewTickets() {
+        if (tickets.isEmpty()) {
+            System.out.println("No tickets available.");
+            return;
+        }
+        for (int i = 0; i < tickets.size(); i++) {
+            System.out.println(i + 1 + ". " + tickets.get(i));
+        }
+    }
+
+    static void resolveTicket() {
+        viewTickets();
+        System.out.print("Enter ticket number to resolve: ");
+        int index = scanner.nextInt() - 1;
+        if (index >= 0 && index < tickets.size()) {
+            tickets.get(index).resolve();
+            System.out.println("Ticket resolved.");
+        } else {
+            System.out.println("Invalid ticket number.");
+        }
+    }
+}
